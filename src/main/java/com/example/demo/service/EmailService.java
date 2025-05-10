@@ -1,38 +1,30 @@
 package com.example.demo.service;
 
+import com.example.demo.config.RabbitMQConfig;
+import com.example.demo.dto.JobOfferDto;
+import com.example.demo.dto.JobOfferNotificationDTO;
 import com.example.demo.entity.Candidate;
 import com.example.demo.repository.NotificationRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.messaging.MessagingException;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class EmailService {
-    private final JavaMailSender mailSender;
-
     @Autowired
-    NotificationRepository notificationRepository;
+    private AmqpTemplate rabbitTemplate;
 
-    @Autowired
-    CandidateService candidateService;
+    public void sendJobOfferNotification(JobOfferDto dto) {
+        rabbitTemplate.convertAndSend(
+                RabbitMQConfig.EXCHANGE,
+                RabbitMQConfig.ROUTING_KEY,
+                dto
+        );
 
-    public boolean sendJobOfferEmail(Long id) {
-        try {
-            Candidate candidate = candidateService.getCandidateById(id);
-            SimpleMailMessage message = new SimpleMailMessage();
-             message.setTo(candidate.getEmail());
-             message.setSubject("Job Offer");
-             message.setText("Congratulations!" + candidate.getFirstName() + "You have been selected as a candidate for the job offer. Please check your email for further details.");
-             mailSender.send(message);
-             return true;
-        } catch (MessagingException e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 }

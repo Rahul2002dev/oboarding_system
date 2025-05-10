@@ -14,12 +14,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class JobOfferDto {
 
-    private Boolean sent;
-
-    private LocalDateTime sentAt;
-
-    private Integer retryCount;
-
-    private String errorMessage;
+    private Long candidateId;
+    private String candidateEmail;
+    private String candidateName;
+    private String position;
 
 }

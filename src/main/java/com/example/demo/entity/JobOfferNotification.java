@@ -32,4 +32,6 @@ public class JobOfferNotification {
 
     @Column(name = "error_message")
     private String errorMessage;
+
+
 }
