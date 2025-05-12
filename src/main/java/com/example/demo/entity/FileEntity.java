@@ -1,5 +1,6 @@
 package com.example.demo.entity;
 
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,16 +8,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "files")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "candidate_document")
-public class CandidateDocument {
-    @Id @GeneratedValue
+public class FileEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String documentType;
-    private String  documentUrl;
-    private Boolean isVerified;
+
+    private String fileName;
+    private String filetype;
+
+
+    @Lob
+    private byte[] data;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "candidate_id", nullable = false)

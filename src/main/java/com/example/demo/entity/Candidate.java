@@ -48,5 +48,8 @@ public class Candidate {
 
    @OneToMany(mappedBy = "candidate",cascade = CascadeType.ALL)
    private List<JobOfferNotification> jobOfferNotifications;
+
+   @OneToMany(mappedBy = "candidate",cascade = CascadeType.ALL)
+   private List<FileEntity> fileEntities;
 }
 ;
