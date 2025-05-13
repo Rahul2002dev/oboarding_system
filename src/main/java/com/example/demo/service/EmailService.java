@@ -27,4 +27,14 @@ public class EmailService {
         );
 
     }
+
+    public void sendotpEmail(String to,String otp){
+        JobOfferDto dto = new JobOfferDto();
+        dto.setCandidateEmail(to);
+        dto.setCandidateName("User");
+        dto.setPosition("otp for password reset is : "+otp);
+        rabbitTemplate.convertAndSend(RabbitMQConfig.EXCHANGE,
+                RabbitMQConfig.ROUTING_KEY,
+                dto);
+    }
 }
